@@ -31,12 +31,9 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioDTO> getById(@PathVariable Integer id) {
-        Usuario usu = usuarioService.findById(id).get();
+        Usuario usu = usuarioService.findById(id);
         return ResponseEntity.ok().body(modelMapper.map(usu, UsuarioDTO.class));
 
-//        Usuario usu = usuarioService.findById(id).get();
-//        UsuarioDTO usuDTO = new UsuarioDTO(usu);
-//        return ResponseEntity.ok().body(usuDTO);
     }
 
     @GetMapping
@@ -45,25 +42,12 @@ public class UsuarioController {
         return ResponseEntity.ok().body(usuList.stream().map(x -> modelMapper.map(x, UsuarioDTO.class))
                 .collect(Collectors.toList()));
 
-
-//        List<Usuario> listUsu = usuarioService.finAll();
-//        List<UsuarioDTO> listDTO = new ArrayList<>();
-//
-//        for (Usuario uso: listUsu) {
-//            listDTO.add(new UsuarioDTO(uso));
-//
-//        }
-//        return listDTO;
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioDTO> save(@RequestBody UsuarioDTO usuarioDTO) {
-        Usuario usu = usuarioService.save(usuarioDTO);
-        return ResponseEntity.ok().body(modelMapper.map(usu, UsuarioDTO.class));
+    public ResponseEntity<UsuarioDTO> save(@RequestBody UsuarioDTO contatoDTO) {
+        return ResponseEntity.ok().body(modelMapper.map(usuarioService.save(contatoDTO), UsuarioDTO.class));
 
-//        Usuario usu = usuarioService.save(usuarioDTO);
-//        UsuarioDTO usuDTO = new UsuarioDTO(usu);
-//        return  usuDTO;
     }
 
     @PutMapping("/{id}")
@@ -71,14 +55,11 @@ public class UsuarioController {
         usuarioDTO.setId(id);
         return ResponseEntity.ok().body(modelMapper.map(usuarioService.upDate(usuarioDTO), UsuarioDTO.class));
 
-//        Usuario usu = usuarioService.findById(id).get();
-//        UsuarioDTO usuDTO = new UsuarioDTO(usu);
-//        return usuarioService.upDate(id, usuarioDTO);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
+    public ResponseEntity<UsuarioDTO> delete(@PathVariable Integer id) {
         usuarioService.delete(id);
-
+        return ResponseEntity.noContent().build();
     }
 }
