@@ -37,8 +37,8 @@ public class UsuarioService {
     }
 
     public Usuario upDate(UsuarioDTO usuarioDTO){
-        findById(usuarioDTO.getId());
-        findByEmail(usuarioDTO);
+          findById(usuarioDTO.getId());
+          findByEmail(usuarioDTO);
         return usuarioRepository.save(modelMapper.map(usuarioDTO, Usuario.class));
 
     }
@@ -48,9 +48,13 @@ public class UsuarioService {
         usuarioRepository.deleteById(id);
     }
 
-    private void findByEmail(UsuarioDTO usuarioDTO) {
-        Optional<Usuario> usu = usuarioRepository.findByEmail(usuarioDTO.getEmail());
-        if (usu.isPresent() && !usu.get().getId().equals(usuarioDTO.getId())) {
+    public List<Usuario> findByName(String name) {
+        return usuarioRepository.findByNomeContaining(name);
+    }
+
+    private void findByEmail(UsuarioDTO UsuarioDTO) {
+        Optional<Usuario> usu = usuarioRepository.findByEmail(UsuarioDTO.getEmail());
+        if (usu.isPresent() && !usu.get().getId().equals(UsuarioDTO.getId())) {
             throw new DataIntregretyViolationException("Email já cadastrado na base de dados!");
         }
     }
